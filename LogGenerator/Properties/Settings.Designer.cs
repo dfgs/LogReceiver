@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LogReceiver.Properties {
+namespace LogGenerator.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -44,6 +44,18 @@ namespace LogReceiver.Properties {
             }
             set {
                 this["Port"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int TriggerDelay {
+            get {
+                return ((int)(this["TriggerDelay"]));
+            }
+            set {
+                this["TriggerDelay"] = value;
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LogReceiver.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LogGenerator.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="MulticastIPaddress" Type="System.String" Scope="User">
@@ -7,6 +7,9 @@
     </Setting>
     <Setting Name="Port" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2020</Value>
+    </Setting>
+    <Setting Name="TriggerDelay" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
     </Setting>
   </Settings>
 </SettingsFile>
