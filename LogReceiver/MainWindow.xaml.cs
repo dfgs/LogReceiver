@@ -23,6 +23,7 @@ namespace LogReceiver
 		public MainWindow()
 		{
 			InitializeComponent();
+
 		}
 	}
 }
