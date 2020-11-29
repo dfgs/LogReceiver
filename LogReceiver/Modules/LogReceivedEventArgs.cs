@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,20 @@ namespace LogReceiver
 {
 	public class LogReceivedEventArgs:EventArgs
 	{
-		public string Log
+		public string Client
+		{
+			get;
+			set;
+		}
+		public Log Log
 		{
 			get;
 			private set;
 		}
 
-		public LogReceivedEventArgs(string Log)
+		public LogReceivedEventArgs(string Client,Log Log)
 		{
-			this.Log = Log;
+			this.Client = Client; this.Log = Log;
 		}
 
 	}

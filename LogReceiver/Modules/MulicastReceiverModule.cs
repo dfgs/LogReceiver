@@ -10,26 +10,51 @@ using System.Threading.Tasks;
 
 namespace LogReceiver.Modules
 {
-	public class MulicastReceiverModule : Module, IMulticastReceiverModule
+	public class MulicastReceiverModule : ThreadModule, IMulticastReceiverModule
 	{
-		private UdpClient client;
 		private readonly object locker = new object();
 		private IPAddress multicastIPaddress;
-		private IPEndPoint remoteEndPoint;
+		private int port;
+		private UdpClient client;
 
 		public event LogReceivedEventHandler LogReceived;
 
 		public MulicastReceiverModule(ILogger Logger,IPAddress MulticastIPaddress, int Port) : base(Logger)
 		{
-			IPEndPoint localEndPoint;
+			this.multicastIPaddress = MulticastIPaddress;
+			this.port = Port;
+		}
 
+		protected override void OnStopping()
+		{
+			base.OnStopping();
+			Log(LogLevels.Information, $"Closing client");
+			try
+			{
+				client.DropMulticastGroup(multicastIPaddress);
+				client.Close();
+			}
+			catch (Exception ex)
+			{
+				Log(ex);
+			}
+		}
+
+		protected override void ThreadLoop()
+		{
+			IPEndPoint localEndPoint;
+			IPEndPoint remoteEndPoint;
+			IPEndPoint sender;
+			Byte[] buffer;
+			Log log;
+
+			LogEnter();
 			try
 			{
 				Log(LogLevels.Information, $"Initialize multicast client");
 
-				this.multicastIPaddress = MulticastIPaddress;
-				localEndPoint = new IPEndPoint(IPAddress.Any, Port);
-				remoteEndPoint = new IPEndPoint(MulticastIPaddress, Port);
+				localEndPoint = new IPEndPoint(IPAddress.Any, port);
+				remoteEndPoint = new IPEndPoint(multicastIPaddress, port);
 
 				client = new UdpClient(AddressFamily.InterNetwork);
 
@@ -37,55 +62,39 @@ namespace LogReceiver.Modules
 				client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 				client.ExclusiveAddressUse = false;
 				client.Client.Bind(localEndPoint);
-				client.JoinMulticastGroup(MulticastIPaddress, IPAddress.Any);
+				client.JoinMulticastGroup(multicastIPaddress, IPAddress.Any);
 
-				Log(LogLevels.Information, $"BeginReceive");
-				client.BeginReceive(ReceivedCallback, null);
 			}
-			catch(Exception ex)
-			{
-				Log(ex);
-			}
-		}
-
-		public override void Dispose()
-		{
-			LogEnter();
-			try
-			{
-				client.DropMulticastGroup(multicastIPaddress);
-				client.Close();
-			}
-			catch(Exception ex)
-			{
-				Log(ex);
-			}
-		}
-
-		private void ReceivedCallback(IAsyncResult ar)
-		{
-			IPEndPoint sender;
-			Byte[] buffer;
-
-			LogEnter();
-
-			try
-			{
-				sender = new IPEndPoint(0, 0);
-				buffer = client.EndReceive(ar, ref sender);
-			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Log(ex);
 				return;
 			}
-			Log(LogLevels.Information, $"Received new log from {sender}");
+
+			while(State==ModuleStates.Started)
+			{
+				Log(LogLevels.Information, $"Waiting for data");
+				try
+				{
+					sender = new IPEndPoint(0, 0);
+					buffer = client.Receive(ref sender);
+					log = LogLib.Log.Deserialize(buffer);
+					
+					Log(LogLevels.Information, $"Received new log from {sender}");
+					if (LogReceived != null) LogReceived(this, new LogReceivedEventArgs(sender.ToString(),log));
+				}
+				catch (Exception ex)
+				{
+					if (State != ModuleStates.Started) return;
+					Log(ex);
+				}
+			}
+
+			
 
 
-			if (LogReceived != null) LogReceived(this, new LogReceivedEventArgs(Encoding.Default.GetString(buffer)));
-
-			client.BeginReceive(new AsyncCallback(ReceivedCallback), null);
 		}
+		
 
 	}
 }

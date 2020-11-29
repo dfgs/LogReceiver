@@ -4,12 +4,48 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogReceiver" Closed="Window_Closed"
+		xmlns:views="clr-namespace:LogReceiver.Views"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
-        Title="LogReceiver" Height="450" Width="800">
-    <DockPanel>
+        Title="LogReceiver" Height="450" Width="800" Icon="Images/page_white_magnify.png">
+	<Window.Resources>
+		<ResourceDictionary>
+
+			<Style x:Key="toolBarImageStyle" TargetType="{x:Type Image}">
+				<Style.Triggers>
+					<Trigger Property="IsEnabled" Value="False">
+						<Setter Property="Opacity" Value="0.5"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+
+			<RoutedCommand x:Key="Start"/>
+			<RoutedCommand x:Key="Stop"/>
+
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Window.CommandBindings>
+		<CommandBinding Command="{StaticResource ResourceKey=Start}" CanExecute="StartCommandBinding_CanExecute" Executed="StartCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource ResourceKey=Stop}" CanExecute="StopCommandBinding_CanExecute" Executed="StopCommandBinding_Executed"/>
+	</Window.CommandBindings>
+	
+	<DockPanel>
+		<ToolBarTray DockPanel.Dock="Top">
+			<ToolBar>
+				<Button Command="{StaticResource ResourceKey=Start}" ToolTip="Start">
+					<Image Stretch="None" Source="Images/control_play.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
+				</Button>
+				<Button Command="{StaticResource ResourceKey=Stop}" ToolTip="Stop">
+					<Image Stretch="None" Source="Images/control_stop.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
+				</Button>
+				<ToggleButton  ToolTip="Tail" IsChecked="{Binding SelectedItem.SelectedItem.Tail}">
+					<Image Stretch="None" Source="Images/control_tail.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
+				</ToggleButton>
+			</ToolBar>
+		</ToolBarTray>
 		<StatusBar DockPanel.Dock="Bottom">
 			<TextBlock/>
 		</StatusBar>
-		<ListView ItemsSource="{Binding Items}"/>
+		<views:ClientsView/>
 	</DockPanel>
 </Window>

@@ -58,5 +58,41 @@ namespace LogGenerator.Properties {
                 this["TriggerDelay"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int ClientCount {
+            get {
+                return ((int)(this["ClientCount"]));
+            }
+            set {
+                this["ClientCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int ComponentCount {
+            get {
+                return ((int)(this["ComponentCount"]));
+            }
+            set {
+                this["ComponentCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int MethodCount {
+            get {
+                return ((int)(this["MethodCount"]));
+            }
+            set {
+                this["MethodCount"] = value;
+            }
+        }
     }
 }

@@ -13,16 +13,35 @@ namespace LogGenerator
 	{
 		static void Main(string[] args)
 		{
+			List<GeneratorModule> modules;
+			GeneratorModule module;
 			MulticastLogger logger;
 
-			logger = new MulticastLogger(new DefaultLogFormatter(), IPAddress.Parse(global::LogGenerator.Properties.Settings.Default.MulticastIPaddress), global::LogGenerator.Properties.Settings.Default.Port);
-
-			while(true)
+			modules = new List<GeneratorModule>();
+			for(int clientId=0;clientId< Properties.Settings.Default.ClientCount;clientId++)
 			{
-				logger.Log(1, "toto", "Method2", LogLevels.Debug, "test");
-				Thread.Sleep(global::LogGenerator.Properties.Settings.Default.TriggerDelay);
+				logger=new MulticastLogger(IPAddress.Parse(Properties.Settings.Default.MulticastIPaddress), Properties.Settings.Default.Port);
+				for (int componentID=0;componentID<Properties.Settings.Default.ComponentCount;componentID++)
+				{
+					for(int methodID=0;methodID<Properties.Settings.Default.MethodCount;methodID++)
+					{
+						module = new GeneratorModule(logger, Properties.Settings.Default.TriggerDelay,clientId,componentID,methodID);
+						module.Start();
+						modules.Add(module);
+					}
+				}
 			}
 
+			
+
+			Console.ReadLine();
+
+			foreach (GeneratorModule m in modules)
+			{
+				m.Stop();
+			}
+
+			
 		}
 	}
 }

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneratorModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -62,6 +63,10 @@
     <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj">
       <Project>{ef4b0001-2859-4a09-8f95-3e5bef4a5272}</Project>
       <Name>LogLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ModuleLib\ModuleLib\ModuleLib.csproj">
+      <Project>{f89b06c7-43cc-4589-9859-3a4656aaa4a6}</Project>
+      <Name>ModuleLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

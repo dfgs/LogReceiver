@@ -1,4 +1,5 @@
-﻿using LogReceiver.Modules;
+﻿using LogLib;
+using LogReceiver.Modules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,24 +12,47 @@ namespace LogReceiver.ViewModels
 {
 	public class ApplicationViewModel:DependencyObject
 	{
-		public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(ObservableCollection<string>), typeof(ApplicationViewModel));
-		public ObservableCollection<string> Items
+
+		public static readonly DependencyProperty ClientsProperty = DependencyProperty.Register("Clients", typeof(ObservableCollection<ClientViewModel>), typeof(ApplicationViewModel));
+		public ObservableCollection<ClientViewModel> Clients
 		{
-			get { return (ObservableCollection<string>)GetValue(ItemsProperty); }
-			set { SetValue(ItemsProperty, value); }
+			get { return (ObservableCollection<ClientViewModel>)GetValue(ClientsProperty); }
+			set { SetValue(ClientsProperty, value); }
+		}
+
+		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(ClientViewModel), typeof(ApplicationViewModel));
+		public ClientViewModel SelectedItem
+		{
+			get { return (ClientViewModel)GetValue(SelectedItemProperty); }
+			set { SetValue(SelectedItemProperty, value); }
 		}
 
 		public ApplicationViewModel(IMulticastReceiverModule Receiver)
 		{
-			Items = new ObservableCollection<string>();
+			Clients = new ObservableCollection<ClientViewModel>();
 			Receiver.LogReceived += Receiver_LogReceived;
 		}
 
 		private void Receiver_LogReceived(object sender, LogReceivedEventArgs e)
 		{
-			Items.Add(e.Log);
+			Dispatcher.Invoke(() => OnLogReceived(e));
 		}
 
+		private void OnLogReceived(LogReceivedEventArgs e)
+		{
+			ClientViewModel clientViewModel;
+
+			clientViewModel = Clients.FirstOrDefault(item => item.Name == e.Client);
+			if (clientViewModel==null)
+			{
+				clientViewModel = new ClientViewModel();
+				clientViewModel.Name = e.Client;
+				Clients.Add(clientViewModel);
+				if (SelectedItem == null) SelectedItem = clientViewModel;
+			}
+
+			clientViewModel.Add(e.Log);
+		}
 
 	}
 }
