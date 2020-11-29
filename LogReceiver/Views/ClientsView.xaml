@@ -7,10 +7,15 @@
  	    	xmlns:views="clr-namespace:LogReceiver.Views"
             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+	
+	
 	<TabControl ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedItem}">
 		<TabControl.ItemTemplate>
 			<DataTemplate>
-				<TextBlock Text="{Binding Name}"/>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Name}"/>
+					<Button Command="{Binding CloseCommand}" Margin="5,0,0,0" Style="{DynamicResource closeButtonControlStyle}"/>
+				</StackPanel>
 			</DataTemplate>
 		</TabControl.ItemTemplate>
 		<TabControl.ContentTemplate>

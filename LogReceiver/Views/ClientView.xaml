@@ -10,7 +10,10 @@
 	<TabControl ItemsSource="{Binding Components}" SelectedItem="{Binding SelectedItem}">
 		<TabControl.ItemTemplate>
 			<DataTemplate>
-				<TextBlock Text="{Binding Name}"/>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Name}"/>
+					<Button Command="{Binding CloseCommand}" Margin="5,0,0,0" Style="{DynamicResource closeButtonControlStyle}"/>
+				</StackPanel>
 			</DataTemplate>
 		</TabControl.ItemTemplate>
 		<TabControl.ContentTemplate>

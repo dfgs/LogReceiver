@@ -50,16 +50,34 @@ namespace LogReceiver.ViewModels
 
 		public event TailEventHandler UpdateScroll;
 
-
-		public ComponentViewModel()
+		public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(Command), typeof(ComponentViewModel));
+		public Command CloseCommand
 		{
+			get { return (Command)GetValue(CloseCommandProperty); }
+			set { SetValue(CloseCommandProperty, value); }
+		}
+
+		public event EventHandler Close;
+
+		private int bufferLength;
+
+		public ComponentViewModel(int BufferLength)
+		{
+			this.bufferLength = BufferLength;
 			Items = new ObservableCollection<Log>();
+			CloseCommand = new Command(OnClose);
+		}
+
+		protected virtual void OnClose()
+		{
+			if (Close != null) Close(this, EventArgs.Empty);
 		}
 
 		public void Add(Log Log)
 		{
 			if (IsPaused) return;
 			Items.Add(Log);
+			if (Items.Count > bufferLength) Items.RemoveAt(0);
 			if (Tail && (UpdateScroll != null)) UpdateScroll(this, new TailEventArgs(Log));
 		}
 	}

@@ -38,7 +38,7 @@ namespace LogReceiver
 
 			InitializeComponent();
 
-			applicationViewModel = new ApplicationViewModel(multicastReceiverModule,unicastReceiverModule);
+			applicationViewModel = new ApplicationViewModel(multicastReceiverModule,unicastReceiverModule, global::LogReceiver.Properties.Settings.Default.BufferLength);
 
 			DataContext = applicationViewModel;
 

@@ -29,9 +29,11 @@ namespace LogReceiver.ViewModels
 
 		private IReceiverModule multicastReceiver;
 		private IReceiverModule unicastReceiver;
+		private int bufferLength;
 
-		public ApplicationViewModel(IReceiverModule MulticastReceiver, IReceiverModule UnicastReceiver)
+		public ApplicationViewModel(IReceiverModule MulticastReceiver, IReceiverModule UnicastReceiver,int BufferLength)
 		{
+			this.bufferLength = BufferLength;
 			Clients = new ObservableCollection<ClientViewModel>();
 
 			this.multicastReceiver = MulticastReceiver;
@@ -59,14 +61,29 @@ namespace LogReceiver.ViewModels
 			clientViewModel = Clients.FirstOrDefault(item => item.Name == e.Client);
 			if (clientViewModel==null)
 			{
-				clientViewModel = new ClientViewModel();
+				clientViewModel = new ClientViewModel(bufferLength);
 				clientViewModel.Name = e.Client;
+				clientViewModel.Close += ClientViewModel_Close;
 				Clients.Add(clientViewModel);
 				if (SelectedItem == null) SelectedItem = clientViewModel;
 			}
 
 			clientViewModel.Add(e.Log);
 		}
+
+		private void ClientViewModel_Close(object sender, EventArgs e)
+		{
+			ClientViewModel clientViewModel;
+
+			clientViewModel = sender as ClientViewModel;
+			if (clientViewModel == null) return;
+
+			clientViewModel.Close-= ClientViewModel_Close;
+			Clients.Remove(clientViewModel);
+			if (SelectedItem == clientViewModel) SelectedItem = Clients.FirstOrDefault();
+		}
+		
+
 
 	}
 }

@@ -20,7 +20,7 @@
 		</ToolBarTray>
 		
 		<ListView  
-			ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" views:TailBehavior.TailProvider="{Binding}">
+			ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" views:TailBehavior.TailProvider="{Binding}" Background="Black">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="{x:Type ListViewItem}">
 					<Setter Property="Background" Value="Black"/>

@@ -58,5 +58,17 @@ namespace LogReceiver.Properties {
                 this["UnicastPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int BufferLength {
+            get {
+                return ((int)(this["BufferLength"]));
+            }
+            set {
+                this["BufferLength"] = value;
+            }
+        }
     }
 }

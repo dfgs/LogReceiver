@@ -11,5 +11,8 @@
     <Setting Name="UnicastPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2021</Value>
     </Setting>
+    <Setting Name="BufferLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

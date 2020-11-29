@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace LogReceiver.ViewModels
 {
@@ -24,34 +25,67 @@ namespace LogReceiver.ViewModels
 			get { return (ObservableCollection<ComponentViewModel>)GetValue(ComponentsProperty); }
 			set { SetValue(ComponentsProperty, value); }
 		}
+		
 		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(ComponentViewModel), typeof(ClientViewModel));
 		public ComponentViewModel SelectedItem
 		{
 			get { return (ComponentViewModel)GetValue(SelectedItemProperty); }
 			set { SetValue(SelectedItemProperty, value); }
 		}
-		public ClientViewModel()
+
+
+		public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(Command), typeof(ClientViewModel));
+		public Command CloseCommand
 		{
+			get { return (Command)GetValue(CloseCommandProperty); }
+			set { SetValue(CloseCommandProperty, value); }
+		}
+
+		public event EventHandler Close;
+
+		private int bufferLength;
+
+
+		public ClientViewModel(int BufferLength)
+		{
+			this.bufferLength = BufferLength;
 			Components = new ObservableCollection<ComponentViewModel>();
+			CloseCommand = new Command(OnClose);
+		}
+
+		protected virtual void OnClose()
+		{
+			if (Close != null) Close(this, EventArgs.Empty);
 		}
 
 		public void Add(Log Log)
 		{
-			ComponentViewModel component;
+			ComponentViewModel componentViewModel;
 
-			component = Components.FirstOrDefault(item => item.Name == Log.ComponentName);
-			if (component==null)
+			componentViewModel = Components.FirstOrDefault(item => item.Name == Log.ComponentName);
+			if (componentViewModel==null)
 			{
-				component = new ComponentViewModel();
-				component.Name = Log.ComponentName;
-				Components.Add(component);
-				if (SelectedItem == null) SelectedItem = component;
+				componentViewModel = new ComponentViewModel(bufferLength);
+				componentViewModel.Name = Log.ComponentName;
+				componentViewModel.Close += ComponentViewModel_Close;
+				Components.Add(componentViewModel);
+				if (SelectedItem == null) SelectedItem = componentViewModel;
 			}
 
-			component.Add(Log);
+			componentViewModel.Add(Log);
 		}
 
+		private void ComponentViewModel_Close(object sender, EventArgs e)
+		{
+			ComponentViewModel componentViewModel;
 
+			componentViewModel = sender as ComponentViewModel;
+			if (componentViewModel == null) return;
+
+			componentViewModel.Close -= ComponentViewModel_Close;
+			Components.Remove(componentViewModel);
+			if (SelectedItem == componentViewModel) SelectedItem = Components.FirstOrDefault();
+		}
 
 	}
 }
