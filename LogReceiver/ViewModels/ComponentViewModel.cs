@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace LogReceiver.ViewModels
 {
-	public class ComponentViewModel : DependencyObject, ITailProvider
+	public class ComponentViewModel : DependencyObject, ITailProvider,ILogProvider
 	{
 		public static readonly DependencyProperty NameProperty = DependencyProperty.Register("Name", typeof(string),typeof(ComponentViewModel));
 		public string Name
@@ -49,6 +49,8 @@ namespace LogReceiver.ViewModels
 
 
 		public event TailEventHandler UpdateScroll;
+		public event LogEventHandler LogAdded;
+		public event LogEventHandler LogRemoved;
 
 		public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(Command), typeof(ComponentViewModel));
 		public Command CloseCommand
@@ -77,7 +79,12 @@ namespace LogReceiver.ViewModels
 		{
 			if (IsPaused) return;
 			Items.Add(Log);
-			if (Items.Count > bufferLength) Items.RemoveAt(0);
+			if (LogAdded != null) LogAdded(this, new LogEventArgs(Log));
+			if (Items.Count > bufferLength)
+			{
+				Items.RemoveAt(0);
+				if (LogRemoved!= null) LogRemoved(this, new LogEventArgs(Log));
+			}
 			if (Tail && (UpdateScroll != null)) UpdateScroll(this, new TailEventArgs(Log));
 		}
 	}

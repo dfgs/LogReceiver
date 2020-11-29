@@ -66,10 +66,15 @@
     <Compile Include="Views\ClientView.xaml.cs">
       <DependentUpon>ClientView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ILogProvider.cs" />
     <Compile Include="Views\ITailProvider.cs" />
     <Compile Include="Views\LogsView.xaml.cs">
       <DependentUpon>LogsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LogsView2.xaml.cs">
+      <DependentUpon>LogsView2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViewModelBehavior.cs" />
     <Compile Include="Views\TailBehavior.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -94,6 +99,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LogsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogsView2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
