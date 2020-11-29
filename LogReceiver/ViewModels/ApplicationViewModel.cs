@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace LogReceiver.ViewModels
 {
-	public class ApplicationViewModel:DependencyObject
+	public class ApplicationViewModel:DependencyObject,IDisposable
 	{
 
 		public static readonly DependencyProperty ClientsProperty = DependencyProperty.Register("Clients", typeof(ObservableCollection<ClientViewModel>), typeof(ApplicationViewModel));
@@ -27,12 +27,26 @@ namespace LogReceiver.ViewModels
 			set { SetValue(SelectedItemProperty, value); }
 		}
 
-		public ApplicationViewModel(IMulticastReceiverModule Receiver)
+		private IReceiverModule multicastReceiver;
+		private IReceiverModule unicastReceiver;
+
+		public ApplicationViewModel(IReceiverModule MulticastReceiver, IReceiverModule UnicastReceiver)
 		{
 			Clients = new ObservableCollection<ClientViewModel>();
-			Receiver.LogReceived += Receiver_LogReceived;
+
+			this.multicastReceiver = MulticastReceiver;
+			this.unicastReceiver = UnicastReceiver;
+			MulticastReceiver.LogReceived += Receiver_LogReceived;
+			UnicastReceiver.LogReceived += Receiver_LogReceived;
+
 		}
 
+		public void Dispose()
+		{
+			multicastReceiver.LogReceived -= Receiver_LogReceived;
+			unicastReceiver.LogReceived -= Receiver_LogReceived;
+			
+		}
 		private void Receiver_LogReceived(object sender, LogReceivedEventArgs e)
 		{
 			Dispatcher.Invoke(() => OnLogReceived(e));

@@ -12,14 +12,14 @@ namespace LogReceiver.Views
 	{
         private static Dictionary<ITailProvider, ListView> items;
 
-        public static readonly DependencyProperty TailProviderProperty = DependencyProperty.RegisterAttached("TailProvider", typeof(ITailProvider), typeof(TailBehavior), new UIPropertyMetadata(false, OnTailProviderChanged));
+        public static readonly DependencyProperty TailProviderProperty = DependencyProperty.RegisterAttached("TailProvider", typeof(ITailProvider), typeof(TailBehavior), new UIPropertyMetadata(null, OnTailProviderChanged));
 
-        public static bool GetTailProvider(DependencyObject obj)
+        public static ITailProvider GetTailProvider(DependencyObject obj)
         {
-            return (bool)obj.GetValue(TailProviderProperty);
+            return (ITailProvider)obj.GetValue(TailProviderProperty);
         }
 
-        public static void SetTailProvider(DependencyObject obj, bool value)
+        public static void SetTailProvider(DependencyObject obj, ITailProvider value)
         {
             obj.SetValue(TailProviderProperty, value);
         }
@@ -42,8 +42,11 @@ namespace LogReceiver.Views
             if (newValue == oldValue) return;
 
             if (oldValue != null) oldValue.UpdateScroll -= UpdateScroll;
-            if (newValue != null) newValue.UpdateScroll += UpdateScroll;
-            items[newValue] = listView;
+            if (newValue != null)
+            {
+                newValue.UpdateScroll += UpdateScroll;
+                items[newValue] = listView;
+            }
            
         }
 

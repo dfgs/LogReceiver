@@ -38,12 +38,12 @@ namespace LogGenerator.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2020")]
-        public int Port {
+        public int MulticastPort {
             get {
-                return ((int)(this["Port"]));
+                return ((int)(this["MulticastPort"]));
             }
             set {
-                this["Port"] = value;
+                this["MulticastPort"] = value;
             }
         }
         
@@ -92,6 +92,18 @@ namespace LogGenerator.Properties {
             }
             set {
                 this["MethodCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2021")]
+        public int UnicastPort {
+            get {
+                return ((int)(this["UnicastPort"]));
+            }
+            set {
+                this["UnicastPort"] = value;
             }
         }
     }

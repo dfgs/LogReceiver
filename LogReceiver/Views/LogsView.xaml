@@ -7,48 +7,61 @@
              xmlns:local="clr-namespace:LogReceiver.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<ListView  
-		ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" views:TailBehavior.TailProvider="{Binding}">
-		<ListView.ItemContainerStyle>
-			<Style TargetType="{x:Type ListViewItem}">
-				<Setter Property="Background" Value="Black"/>
-				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="BorderThickness" Value="0"/>
-				<Setter Property="Margin" Value="0"/>
-				<Setter Property="Padding" Value="0"/>
-				<Setter Property="FontFamily" Value="Consolas"/>
-				<Style.Triggers>
-					<Trigger Property="IsSelected" Value="true" >
-						<Setter Property="Background" Value="#505070" />
-					</Trigger>
-					<Trigger Property="IsMouseOver" Value="true" >
-						<Setter Property="Background" Value="#505070" />
-					</Trigger>
-					<DataTrigger Binding="{Binding Level}" Value="Debug">
-						<Setter Property="Foreground" Value="Gray"/>
-					</DataTrigger>
-					<DataTrigger Binding="{Binding Level}" Value="Information">
-						<Setter Property="Foreground" Value="White"/>
-					</DataTrigger>
-					<DataTrigger Binding="{Binding Level}" Value="Warning">
-						<Setter Property="Foreground" Value="Orange"/>
-					</DataTrigger>
-					<DataTrigger Binding="{Binding Level}" Value="Error">
-						<Setter Property="Foreground" Value="Red"/>
-					</DataTrigger>
-					<DataTrigger Binding="{Binding Level}" Value="Fatal">
-						<Setter Property="Foreground" Value="Magenta"/>
-					</DataTrigger>
-				</Style.Triggers>
-			</Style>
-		</ListView.ItemContainerStyle>
-		<ListView.View>
-			<GridView>
-				<GridViewColumn Header="Timestamp" DisplayMemberBinding="{Binding DateTime}" Width="160" />
-				<GridViewColumn Header="Level" DisplayMemberBinding="{Binding Level}" Width="100" />
-				<GridViewColumn Header="Method" DisplayMemberBinding="{Binding MethodName}" Width="150" />
-				<GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="500" />
-			</GridView>
-		</ListView.View>
-	</ListView>
+	<DockPanel>
+		<ToolBarTray DockPanel.Dock="Top">
+			<ToolBar>
+				<ToggleButton  ToolTip="Tail" IsChecked="{Binding Tail}">
+					<Image Stretch="None" Source="/LogReceiver;component/Images/control_tail.png" />
+				</ToggleButton>
+				<ToggleButton  ToolTip="Pause" IsChecked="{Binding IsPaused}">
+					<Image Stretch="None" Source="/LogReceiver;component/Images/control_pause.png" />
+				</ToggleButton>
+			</ToolBar>
+		</ToolBarTray>
+		
+		<ListView  
+			ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" views:TailBehavior.TailProvider="{Binding}">
+			<ListView.ItemContainerStyle>
+				<Style TargetType="{x:Type ListViewItem}">
+					<Setter Property="Background" Value="Black"/>
+					<Setter Property="Foreground" Value="White"/>
+					<Setter Property="BorderThickness" Value="0"/>
+					<Setter Property="Margin" Value="0"/>
+					<Setter Property="Padding" Value="0"/>
+					<Setter Property="FontFamily" Value="Consolas"/>
+					<Style.Triggers>
+						<Trigger Property="IsSelected" Value="true" >
+							<Setter Property="Background" Value="#505070" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true" >
+							<Setter Property="Background" Value="#505070" />
+						</Trigger>
+						<DataTrigger Binding="{Binding Level}" Value="Debug">
+							<Setter Property="Foreground" Value="Gray"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Level}" Value="Information">
+							<Setter Property="Foreground" Value="White"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Level}" Value="Warning">
+							<Setter Property="Foreground" Value="Orange"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Level}" Value="Error">
+							<Setter Property="Foreground" Value="Red"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Level}" Value="Fatal">
+							<Setter Property="Foreground" Value="Magenta"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ListView.ItemContainerStyle>
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="Timestamp" DisplayMemberBinding="{Binding DateTime}" Width="160" />
+					<GridViewColumn Header="Level" DisplayMemberBinding="{Binding Level}" Width="100" />
+					<GridViewColumn Header="Method" DisplayMemberBinding="{Binding MethodName}" Width="150" />
+					<GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}" Width="500" />
+				</GridView>
+			</ListView.View>
+		</ListView>
+	</DockPanel>
 </UserControl>

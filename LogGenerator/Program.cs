@@ -15,12 +15,13 @@ namespace LogGenerator
 		{
 			List<GeneratorModule> modules;
 			GeneratorModule module;
-			MulticastLogger logger;
-
+			ILogger logger;
+			
 			modules = new List<GeneratorModule>();
 			for(int clientId=0;clientId< Properties.Settings.Default.ClientCount;clientId++)
 			{
-				logger=new MulticastLogger(IPAddress.Parse(Properties.Settings.Default.MulticastIPaddress), Properties.Settings.Default.Port);
+				//logger=new MulticastLogger(IPAddress.Parse(Properties.Settings.Default.MulticastIPaddress), Properties.Settings.Default.MulticastPort);
+				logger=new UnicastLogger(IPAddress.Parse("127.0.0.1"), Properties.Settings.Default.UnicastPort);
 				for (int componentID=0;componentID<Properties.Settings.Default.ComponentCount;componentID++)
 				{
 					for(int methodID=0;methodID<Properties.Settings.Default.MethodCount;methodID++)

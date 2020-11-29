@@ -34,14 +34,22 @@ namespace LogReceiver.ViewModels
 		}
 
 		public static readonly DependencyProperty TailProperty = DependencyProperty.Register("Tail", typeof(bool), typeof(ComponentViewModel),new FrameworkPropertyMetadata(true));
-
-		public event TailEventHandler UpdateScroll;
-
 		public bool Tail
 		{
 			get { return (bool)GetValue(TailProperty); }
 			set { SetValue(TailProperty, value); }
 		}
+		
+		public static readonly DependencyProperty IsPausedProperty = DependencyProperty.Register("IsPaused", typeof(bool), typeof(ComponentViewModel), new FrameworkPropertyMetadata(false));
+		public bool IsPaused
+		{
+			get { return (bool)GetValue(IsPausedProperty); }
+			set { SetValue(IsPausedProperty, value); }
+		}
+
+
+		public event TailEventHandler UpdateScroll;
+
 
 		public ComponentViewModel()
 		{
@@ -50,6 +58,7 @@ namespace LogReceiver.ViewModels
 
 		public void Add(Log Log)
 		{
+			if (IsPaused) return;
 			Items.Add(Log);
 			if (Tail && (UpdateScroll != null)) UpdateScroll(this, new TailEventArgs(Log));
 		}

@@ -16,9 +16,9 @@ namespace LogGenerator
 		private int componentID;
 		private int methodID;
 		private int delay;
-		private MulticastLogger logger;
+		private ILogger logger;
 
-		public GeneratorModule(MulticastLogger Logger, int Delay,int ClientID,int ComponentID,int MethodID):base(NullLogger.Instance)
+		public GeneratorModule(ILogger Logger, int Delay,int ClientID,int ComponentID,int MethodID):base(NullLogger.Instance)
 		{
 			this.logger = Logger;
 			this.delay = Delay;

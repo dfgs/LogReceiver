@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LogReceiver" Closed="Window_Closed"
+        xmlns:local="clr-namespace:LogReceiver" Closing="Window_Closing"
 		xmlns:views="clr-namespace:LogReceiver.Views"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
         Title="LogReceiver" Height="450" Width="800" Icon="Images/page_white_magnify.png">
@@ -18,8 +18,8 @@
 				</Style.Triggers>
 			</Style>
 
-			<RoutedCommand x:Key="Start"/>
-			<RoutedCommand x:Key="Stop"/>
+			<RoutedUICommand x:Key="Start"/>
+			<RoutedUICommand x:Key="Stop"/>
 
 		</ResourceDictionary>
 	</Window.Resources>
@@ -38,10 +38,8 @@
 				<Button Command="{StaticResource ResourceKey=Stop}" ToolTip="Stop">
 					<Image Stretch="None" Source="Images/control_stop.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
 				</Button>
-				<ToggleButton  ToolTip="Tail" IsChecked="{Binding SelectedItem.SelectedItem.Tail}">
-					<Image Stretch="None" Source="Images/control_tail.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
-				</ToggleButton>
 			</ToolBar>
+			
 		</ToolBarTray>
 		<StatusBar DockPanel.Dock="Bottom">
 			<TextBlock/>

@@ -5,8 +5,11 @@
     <Setting Name="MulticastIPaddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">224.0.0.1</Value>
     </Setting>
-    <Setting Name="Port" Type="System.Int32" Scope="User">
+    <Setting Name="MulticastPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2020</Value>
+    </Setting>
+    <Setting Name="UnicastPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2021</Value>
     </Setting>
   </Settings>
 </SettingsFile>

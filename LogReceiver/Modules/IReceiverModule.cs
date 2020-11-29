@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogReceiver.Modules
 {
-	public interface IMulticastReceiverModule:IThreadModule,IDisposable
+	public interface IReceiverModule:IThreadModule,IDisposable
 	{
 		event LogReceivedEventHandler LogReceived;
 	}
