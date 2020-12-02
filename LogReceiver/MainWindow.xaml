@@ -37,29 +37,43 @@
 				
 				
 			</Style>
-			
-			<RoutedUICommand x:Key="Start"/>
-			<RoutedUICommand x:Key="Stop"/>
+
+			<RoutedUICommand x:Key="MulticastStart"/>
+			<RoutedUICommand x:Key="MulticastStop"/>
+			<RoutedUICommand x:Key="UnicastStart"/>
+			<RoutedUICommand x:Key="UnicastStop"/>
 
 		</ResourceDictionary>
 	</Window.Resources>
 
 	<Window.CommandBindings>
-		<CommandBinding Command="{StaticResource ResourceKey=Start}" CanExecute="StartCommandBinding_CanExecute" Executed="StartCommandBinding_Executed"/>
-		<CommandBinding Command="{StaticResource ResourceKey=Stop}" CanExecute="StopCommandBinding_CanExecute" Executed="StopCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource ResourceKey=MulticastStart}" CanExecute="StartMulticastCommandBinding_CanExecute" Executed="StartMulticastCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource ResourceKey=MulticastStop}" CanExecute="StopMulticastCommandBinding_CanExecute" Executed="StopMulticastCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource ResourceKey=UnicastStart}" CanExecute="StartUnicastCommandBinding_CanExecute" Executed="StartUnicastCommandBinding_Executed"/>
+		<CommandBinding Command="{StaticResource ResourceKey=UnicastStop}" CanExecute="StopUnicastCommandBinding_CanExecute" Executed="StopUnicastCommandBinding_Executed"/>
 	</Window.CommandBindings>
 	
 	<DockPanel>
 		<ToolBarTray DockPanel.Dock="Top">
 			<ToolBar>
-				<Button Command="{StaticResource ResourceKey=Start}" ToolTip="Start">
+				<Label Content="Unicast receiver: " FontWeight="Bold"/>
+				<Button Command="{StaticResource ResourceKey=UnicastStart}" ToolTip="Start unicast receiver">
 					<Image Stretch="None" Source="Images/control_play.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
 				</Button>
-				<Button Command="{StaticResource ResourceKey=Stop}" ToolTip="Stop">
+				<Button Command="{StaticResource ResourceKey=UnicastStop}" ToolTip="Stop unicast receiver">
 					<Image Stretch="None" Source="Images/control_stop.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
 				</Button>
 			</ToolBar>
-			
+
+			<ToolBar>
+				<Label Content="Multicast receiver: " FontWeight="Bold"/>
+				<Button Command="{StaticResource ResourceKey=MulticastStart}" ToolTip="Start multicast receiver">
+					<Image Stretch="None" Source="Images/control_play.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
+				</Button>
+				<Button Command="{StaticResource ResourceKey=MulticastStop}" ToolTip="Stop multicast receiver">
+					<Image Stretch="None" Source="Images/control_stop.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
+				</Button>
+			</ToolBar>
 		</ToolBarTray>
 		<StatusBar DockPanel.Dock="Bottom">
 			<TextBlock/>

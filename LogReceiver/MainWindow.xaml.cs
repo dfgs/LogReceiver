@@ -42,8 +42,8 @@ namespace LogReceiver
 
 			DataContext = applicationViewModel;
 
-			multicastReceiverModule.Start();
-			unicastReceiverModule.Start();
+			//multicastReceiverModule.Start();
+			//unicastReceiverModule.Start();
 		}
 
 		private void Window_Closing(object sender, EventArgs e)
@@ -57,25 +57,44 @@ namespace LogReceiver
 			logger.Dispose();
 		}
 
-		private void StartCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		private void StartMulticastCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true;e.CanExecute = (multicastReceiverModule.State == ModuleLib.ModuleStates.Stopped) && (unicastReceiverModule.State == ModuleLib.ModuleStates.Stopped);
+			e.Handled = true;e.CanExecute = (multicastReceiverModule.State == ModuleLib.ModuleStates.Stopped);
 		}
 
-		private void StartCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void StartMulticastCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			multicastReceiverModule.Start();
+		}
+
+		private void StopMulticastCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (multicastReceiverModule.State == ModuleLib.ModuleStates.Started) ;
+		}
+
+		private void StopMulticastCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			multicastReceiverModule.Stop(); ;
+		}
+
+
+		private void StartUnicastCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute =  (unicastReceiverModule.State == ModuleLib.ModuleStates.Stopped);
+		}
+
+		private void StartUnicastCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
 			unicastReceiverModule.Start();
 		}
 
-		private void StopCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		private void StopUnicastCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = (multicastReceiverModule.State == ModuleLib.ModuleStates.Started) && (unicastReceiverModule.State == ModuleLib.ModuleStates.Started);
+			e.Handled = true; e.CanExecute =  (unicastReceiverModule.State == ModuleLib.ModuleStates.Started);
 		}
 
-		private void StopCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void StopUnicastCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			multicastReceiverModule.Stop(); ;
 			unicastReceiverModule.Stop();
 		}
 
