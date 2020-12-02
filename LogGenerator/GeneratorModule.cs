@@ -31,10 +31,11 @@ namespace LogGenerator
 			LogLevels level;
 			Random r;
 			int value;
+			int index=0;
 
 			r = new Random();
 
-			Thread.Sleep(new Random().Next(0, delay));
+			Thread.Sleep(new Random().Next(0, 10000));
 			while(State==ModuleStates.Started)
 			{
 				value = r.Next(100);
@@ -44,7 +45,8 @@ namespace LogGenerator
 				else if (value > 25) level = LogLevels.Information;
 				else level = LogLevels.Debug;
 
-				logger.Log(componentID, $"Component{componentID}", $"Method{methodID}",level,$"Message from client {clientID}") ;
+				logger.Log(componentID, $"Component{componentID}", $"Method{methodID}",level,$"Message {index} from client {clientID}") ;
+				index++;
 				WaitHandles(delay, QuitEvent);
 			}
 

@@ -54,6 +54,7 @@ namespace LogReceiver.Views
             }
             if (newValue != null)
             {
+                Clear(richTextBox);
                 foreach(Log log in newValue.Items)
 				{
                     WriteLog(richTextBox, log);
@@ -87,13 +88,27 @@ namespace LogReceiver.Views
             WriteLog(richTextBox, e.Item);
         }
 
+        private static void Clear(RichTextBox richTextBox)
+        {
+
+            TextPointer pointer1 = richTextBox.Document.ContentStart;
+            TextPointer pointer2 = richTextBox.Document.ContentEnd;
+
+            richTextBox.Selection.Select(pointer1, pointer2);
+            richTextBox.Selection.Text = "";
+        }
         private static void LogRemoved(object sender, LogEventArgs e)
         {
             RichTextBox richTextBox;
 
             if (!items.TryGetValue((ComponentViewModel)sender, out richTextBox)) return;
-            
 
+            TextPointer pointer1 = richTextBox.Document.ContentStart.GetNextContextPosition(LogicalDirection.Forward);
+            TextPointer pointer2 = pointer1.GetLineStartPosition(1);
+
+            if ((pointer1 == null) || (pointer2 == null)) return;
+            richTextBox.Selection.Select(pointer1, pointer2);
+            richTextBox.Selection.Text = "";
         }
 
         private static void WriteLog(RichTextBox RichTextBox, Log Log)
@@ -122,7 +137,7 @@ namespace LogReceiver.Views
                     break;
             }
             TextRange tr = new TextRange(RichTextBox.Document.ContentEnd, RichTextBox.Document.ContentEnd);
-            tr.Text = $"{Log.DateTime}  {Log.Level.ToString().PadRight(12)}  {Log.Message}\r";
+            tr.Text = $"{Log.DateTime}  {Log.Level.ToString().PadRight(12)}  {Log.MethodName}  {Log.Message}\r";
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, brush);
         }
 

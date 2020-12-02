@@ -85,18 +85,6 @@ namespace LogGenerator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3")]
-        public int MethodCount {
-            get {
-                return ((int)(this["MethodCount"]));
-            }
-            set {
-                this["MethodCount"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2021")]
         public int UnicastPort {
             get {
@@ -104,6 +92,18 @@ namespace LogGenerator.Properties {
             }
             set {
                 this["UnicastPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int MethodCount {
+            get {
+                return ((int)(this["MethodCount"]));
+            }
+            set {
+                this["MethodCount"] = value;
             }
         }
     }

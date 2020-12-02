@@ -51,7 +51,14 @@ namespace LogReceiver.ViewModels
 		}
 		private void Receiver_LogReceived(object sender, LogReceivedEventArgs e)
 		{
-			Dispatcher.Invoke(() => OnLogReceived(e));
+			try
+			{
+				Dispatcher.Invoke(() => OnLogReceived(e));
+			}
+			catch
+			{
+
+			}
 		}
 
 		private void OnLogReceived(LogReceivedEventArgs e)

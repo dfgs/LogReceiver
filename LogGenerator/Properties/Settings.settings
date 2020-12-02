@@ -17,11 +17,11 @@
     <Setting Name="ComponentCount" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
-    <Setting Name="MethodCount" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">3</Value>
-    </Setting>
     <Setting Name="UnicastPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2021</Value>
+    </Setting>
+    <Setting Name="MethodCount" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
     </Setting>
   </Settings>
 </SettingsFile>
