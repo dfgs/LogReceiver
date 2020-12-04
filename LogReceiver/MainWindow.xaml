@@ -38,6 +38,7 @@
 				
 			</Style>
 
+			<RoutedUICommand x:Key="Clear"/>
 			<RoutedUICommand x:Key="MulticastStart"/>
 			<RoutedUICommand x:Key="MulticastStop"/>
 			<RoutedUICommand x:Key="UnicastStart"/>
@@ -47,6 +48,7 @@
 	</Window.Resources>
 
 	<Window.CommandBindings>
+		<CommandBinding Command="{StaticResource ResourceKey=Clear}" CanExecute="ClearCommandBinding_CanExecute" Executed="ClearCommandBinding_Executed"/>
 		<CommandBinding Command="{StaticResource ResourceKey=MulticastStart}" CanExecute="StartMulticastCommandBinding_CanExecute" Executed="StartMulticastCommandBinding_Executed"/>
 		<CommandBinding Command="{StaticResource ResourceKey=MulticastStop}" CanExecute="StopMulticastCommandBinding_CanExecute" Executed="StopMulticastCommandBinding_Executed"/>
 		<CommandBinding Command="{StaticResource ResourceKey=UnicastStart}" CanExecute="StartUnicastCommandBinding_CanExecute" Executed="StartUnicastCommandBinding_Executed"/>
@@ -55,6 +57,12 @@
 	
 	<DockPanel>
 		<ToolBarTray DockPanel.Dock="Top">
+			<ToolBar>
+				<Button Command="{StaticResource ResourceKey=Clear}" ToolTip="Clear tabs">
+					<Image Stretch="None" Source="Images/page_white.png" Style="{StaticResource ResourceKey=toolBarImageStyle}"/>
+				</Button>
+				
+			</ToolBar>
 			<ToolBar>
 				<Label Content="Unicast receiver: " FontWeight="Bold"/>
 				<Button Command="{StaticResource ResourceKey=UnicastStart}" ToolTip="Start unicast receiver">

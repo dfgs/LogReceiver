@@ -90,6 +90,15 @@ namespace LogReceiver.ViewModels
 			if (SelectedItem == clientViewModel) SelectedItem = Clients.FirstOrDefault();
 		}
 		
+		public void CloseAll()
+		{
+			foreach(ClientViewModel clientViewModel in Clients)
+			{
+				clientViewModel.Close -= ClientViewModel_Close;
+			}
+			Clients.Clear();
+			SelectedItem = null;
+		}
 
 
 	}

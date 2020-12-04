@@ -36,9 +36,10 @@ namespace LogReceiver
 			multicastReceiverModule = new MulicastReceiverModule(logger, IPAddress.Parse(global::LogReceiver.Properties.Settings.Default.MulticastIPaddress), global::LogReceiver.Properties.Settings.Default.MulticastPort);
 			unicastReceiverModule = new UnicastReceiverModule(logger,  global::LogReceiver.Properties.Settings.Default.UnicastPort);
 
+			applicationViewModel = new ApplicationViewModel(multicastReceiverModule, unicastReceiverModule, global::LogReceiver.Properties.Settings.Default.BufferLength);
+
 			InitializeComponent();
 
-			applicationViewModel = new ApplicationViewModel(multicastReceiverModule,unicastReceiverModule, global::LogReceiver.Properties.Settings.Default.BufferLength);
 
 			DataContext = applicationViewModel;
 
@@ -56,7 +57,15 @@ namespace LogReceiver
 			}*/
 			logger.Dispose();
 		}
+		private void ClearCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (applicationViewModel.Clients.Count>0);
+		}
 
+		private void ClearCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			applicationViewModel.CloseAll();
+		}
 		private void StartMulticastCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true;e.CanExecute = (multicastReceiverModule.State == ModuleLib.ModuleStates.Stopped);

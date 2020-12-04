@@ -59,7 +59,7 @@ namespace LogReceiver.Views
 				{
                     WriteLog(richTextBox, log);
 				}
-
+                if (newValue.Tail) richTextBox.ScrollToEnd();
 				newValue.LogAdded += LogAdded;
                 newValue.LogRemoved += LogRemoved;
                 newValue.UpdateScroll += UpdateScroll;
