@@ -55,9 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Modules\ReceiverModule.cs" />
     <Compile Include="Modules\UnicastReceiverModule.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
-    <Compile Include="ViewModels\Command.cs" />
     <Compile Include="ViewModels\ComponentViewModel.cs" />
     <Compile Include="ViewModels\ClientViewModel.cs" />
     <Compile Include="Views\ClientsView.xaml.cs">
@@ -84,8 +84,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modules\LogReceivedEventArgs.cs" />
-    <Compile Include="Modules\LogReceivedEventHandler.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -143,6 +141,10 @@
     <ProjectReference Include="..\..\ModuleLib\ModuleLib\ModuleLib.csproj">
       <Project>{F89B06C7-43CC-4589-9859-3A4656AAA4A6}</Project>
       <Name>ModuleLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ViewModelLib\ViewModelLib\ViewModelLib.csproj">
+      <Project>{9cd722c0-3abe-48c7-a2fe-b18fbc6b5daa}</Project>
+      <Name>ViewModelLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

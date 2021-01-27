@@ -36,7 +36,7 @@ namespace LogReceiver
 			multicastReceiverModule = new MulicastReceiverModule(logger, IPAddress.Parse(global::LogReceiver.Properties.Settings.Default.MulticastIPaddress), global::LogReceiver.Properties.Settings.Default.MulticastPort);
 			unicastReceiverModule = new UnicastReceiverModule(logger,  global::LogReceiver.Properties.Settings.Default.UnicastPort);
 
-			applicationViewModel = new ApplicationViewModel(multicastReceiverModule, unicastReceiverModule, global::LogReceiver.Properties.Settings.Default.BufferLength);
+			applicationViewModel = new ApplicationViewModel(multicastReceiverModule, unicastReceiverModule, global::LogReceiver.Properties.Settings.Default.BufferLength, global::LogReceiver.Properties.Settings.Default.RefreshDelay) ;
 
 			InitializeComponent();
 

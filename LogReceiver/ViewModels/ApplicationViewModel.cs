@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace LogReceiver.ViewModels
 {
@@ -31,51 +33,58 @@ namespace LogReceiver.ViewModels
 		private IReceiverModule unicastReceiver;
 		private int bufferLength;
 
-		public ApplicationViewModel(IReceiverModule MulticastReceiver, IReceiverModule UnicastReceiver,int BufferLength)
+		private DispatcherTimer timer;
+
+		public ApplicationViewModel(IReceiverModule MulticastReceiver, IReceiverModule UnicastReceiver,int BufferLength,int RefreshDelay)
 		{
 			this.bufferLength = BufferLength;
 			Clients = new ObservableCollection<ClientViewModel>();
 
 			this.multicastReceiver = MulticastReceiver;
 			this.unicastReceiver = UnicastReceiver;
-			MulticastReceiver.LogReceived += Receiver_LogReceived;
-			UnicastReceiver.LogReceived += Receiver_LogReceived;
+
+			timer = new DispatcherTimer();
+			timer.Interval = TimeSpan.FromMilliseconds(RefreshDelay);
+			timer.Tick += Timer_Tick;
+			timer.Start();
 
 		}
+
+		
 
 		public void Dispose()
 		{
-			multicastReceiver.LogReceived -= Receiver_LogReceived;
-			unicastReceiver.LogReceived -= Receiver_LogReceived;
+			timer.Stop();
 			
 		}
-		private void Receiver_LogReceived(object sender, LogReceivedEventArgs e)
-		{
-			try
-			{
-				Dispatcher.Invoke(() => OnLogReceived(e));
-			}
-			catch
-			{
 
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			Tuple<IPEndPoint,Log>[] items;
+
+			items = unicastReceiver.GetLogs();
+			foreach(Tuple<IPEndPoint, Log> item in items)
+			{
+				OnLogReceived(item.Item1.ToString(), item.Item2);
 			}
 		}
+		
 
-		private void OnLogReceived(LogReceivedEventArgs e)
+		private void OnLogReceived(string Client,Log Log)
 		{
 			ClientViewModel clientViewModel;
 
-			clientViewModel = Clients.FirstOrDefault(item => item.Name == e.Client);
+			clientViewModel = Clients.FirstOrDefault(item => item.Name == Client);
 			if (clientViewModel==null)
 			{
 				clientViewModel = new ClientViewModel(bufferLength);
-				clientViewModel.Name = e.Client;
+				clientViewModel.Name = Client;
 				clientViewModel.Close += ClientViewModel_Close;
 				Clients.Add(clientViewModel);
 				if (SelectedItem == null) SelectedItem = clientViewModel;
 			}
 
-			clientViewModel.Add(e.Log);
+			clientViewModel.Add(Log);
 		}
 
 		private void ClientViewModel_Close(object sender, EventArgs e)

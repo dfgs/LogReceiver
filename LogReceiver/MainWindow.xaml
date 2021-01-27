@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogReceiver" Closing="Window_Closing"
 		xmlns:views="clr-namespace:LogReceiver.Views"
+		xmlns:viewModelLib="clr-namespace:ViewModelLib;assembly=ViewModelLib"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
         Title="LogReceiver" Height="450" Width="800" Icon="Images/page_white_magnify.png">
 	<Window.Resources>

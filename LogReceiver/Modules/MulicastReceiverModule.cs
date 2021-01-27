@@ -10,14 +10,12 @@ using System.Threading.Tasks;
 
 namespace LogReceiver.Modules
 {
-	public class MulicastReceiverModule : ThreadModule, IReceiverModule
+	public class MulicastReceiverModule : ReceiverModule
 	{
-		private readonly object locker = new object();
 		private IPAddress multicastIPaddress;
 		private int port;
 		private UdpClient client;
 
-		public event LogReceivedEventHandler LogReceived;
 
 		public MulicastReceiverModule(ILogger Logger,IPAddress MulticastIPaddress, int Port) : base(Logger)
 		{
@@ -69,39 +67,20 @@ namespace LogReceiver.Modules
 			}
 		}
 
-		protected override void ThreadLoop()
+		protected override Log ReceiveLog(out IPEndPoint Sender)
 		{
-			IPEndPoint sender;
 			Byte[] buffer;
 			Log log;
 
 			LogEnter();
-			
 
-			while(State==ModuleStates.Started)
-			{
-				Log(LogLevels.Information, $"Waiting for data");
-				try
-				{
-					sender = new IPEndPoint(0, 0);
-					buffer = client.Receive(ref sender);
-					log = LogLib.Log.Deserialize(buffer);
-					
-					Log(LogLevels.Information, $"Received new log from {sender}");
-					// Event called async to avoid blocking when app close
-					if (LogReceived != null) LogReceived.BeginInvoke(this, new LogReceivedEventArgs(sender.ToString(), log), null, null);
-				}
-				catch (Exception ex)
-				{
-					if (State != ModuleStates.Started) return;
-					Log(ex);
-				}
-			}
+			Sender = new IPEndPoint(0, 0);
+			buffer = client.Receive(ref Sender);
+			log = LogLib.Log.Deserialize(buffer);
 
-			
-
-
+			return log;
 		}
+
 		
 
 	}

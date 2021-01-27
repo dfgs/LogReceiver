@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using ViewModelLib;
 
 namespace LogReceiver.ViewModels
 {
@@ -34,10 +35,10 @@ namespace LogReceiver.ViewModels
 		}
 
 
-		public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(Command), typeof(ClientViewModel));
-		public Command CloseCommand
+		public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ViewModelCommand), typeof(ClientViewModel));
+		public ViewModelCommand CloseCommand
 		{
-			get { return (Command)GetValue(CloseCommandProperty); }
+			get { return (ViewModelCommand)GetValue(CloseCommandProperty); }
 			set { SetValue(CloseCommandProperty, value); }
 		}
 
@@ -50,10 +51,10 @@ namespace LogReceiver.ViewModels
 		{
 			this.bufferLength = BufferLength;
 			Components = new ObservableCollection<ComponentViewModel>();
-			CloseCommand = new Command(OnClose);
+			CloseCommand = new ViewModelCommand((object t) => true ,OnClose) ;
 		}
 
-		protected virtual void OnClose()
+		protected virtual void OnClose(object sender)
 		{
 			if (Close != null) Close(this, EventArgs.Empty);
 		}
