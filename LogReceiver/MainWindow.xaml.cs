@@ -51,10 +51,7 @@ namespace LogReceiver
 		{
 			multicastReceiverModule.Stop();
 			unicastReceiverModule.Stop();
-			/*if ((multicastReceiverModule.State!=ModuleLib.ModuleStates.Stopped) || (unicastReceiverModule.State != ModuleLib.ModuleStates.Stopped))
-			{
-				int t = 0;
-			}*/
+			
 			logger.Dispose();
 		}
 		private void ClearCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -39,6 +39,7 @@
 				
 			</Style>
 
+			
 			<RoutedUICommand x:Key="Clear"/>
 			<RoutedUICommand x:Key="MulticastStart"/>
 			<RoutedUICommand x:Key="MulticastStop"/>
